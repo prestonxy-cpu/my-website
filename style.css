@@ -237,12 +237,24 @@ a { text-decoration: none; color: inherit; }
     border-color: var(--text);
 }
 
-/* ========== Yield Curve ========== */
-.yield-overview-container {
+/* ========== Treasury Futures Cards ========== */
+.yield-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.yield-card {
     background: #fff;
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
+}
+
+.section-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: -4px 0 12px;
 }
 
 /* ========== Impact Summary Card ========== */
