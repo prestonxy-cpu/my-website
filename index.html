@@ -106,38 +106,52 @@
                 <h2>收益率曲线</h2>
                 <span class="section-badge">实时</span>
             </div>
-            <div class="yield-cards">
-                <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"TVC:US02Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
-                    </div>
-                </div>
-                <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"TVC:US05Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
-                    </div>
-                </div>
-                <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"TVC:US10Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
-                    </div>
-                </div>
-                <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"TVC:US30Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
-                    </div>
+            <div class="yield-overview-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+                    {
+                        "colorTheme": "light",
+                        "dateRange": "1M",
+                        "showChart": true,
+                        "locale": "zh_CN",
+                        "width": "100%",
+                        "height": "460",
+                        "largeChartUrl": "",
+                        "isTransparent": true,
+                        "showSymbolLogo": true,
+                        "showFloatingTooltip": false,
+                        "plotLineColorGrowing": "rgba(231, 76, 60, 1)",
+                        "plotLineColorFalling": "rgba(46, 204, 113, 1)",
+                        "belowLineFillColorGrowing": "rgba(231, 76, 60, 0.12)",
+                        "belowLineFillColorFalling": "rgba(46, 204, 113, 0.12)",
+                        "belowLineFillColorGrowingBottom": "rgba(231, 76, 60, 0)",
+                        "belowLineFillColorFallingBottom": "rgba(46, 204, 113, 0)",
+                        "symbolActiveColor": "rgba(231, 76, 60, 0.12)",
+                        "tabs": [
+                            {
+                                "title": "美债收益率",
+                                "symbols": [
+                                    {"s": "CBOE:IRX", "d": "13周短期收益率"},
+                                    {"s": "CBOE:FVX", "d": "5年期收益率"},
+                                    {"s": "CBOE:TNX", "d": "10年期收益率"},
+                                    {"s": "CBOE:TYX", "d": "30年期收益率"}
+                                ],
+                                "originalTitle": "US Treasury Yields"
+                            },
+                            {
+                                "title": "国债期货",
+                                "symbols": [
+                                    {"s": "CBOT:ZT1!", "d": "2年期期货"},
+                                    {"s": "CBOT:ZF1!", "d": "5年期期货"},
+                                    {"s": "CBOT:ZN1!", "d": "10年期期货"},
+                                    {"s": "CBOT:ZB1!", "d": "30年期期货"}
+                                ],
+                                "originalTitle": "Treasury Futures"
+                            }
+                        ]
+                    }
+                    </script>
                 </div>
             </div>
         </section>

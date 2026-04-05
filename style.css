@@ -238,13 +238,7 @@ a { text-decoration: none; color: inherit; }
 }
 
 /* ========== Yield Curve ========== */
-.yield-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-}
-
-.yield-card {
+.yield-overview-container {
     background: #fff;
     border-radius: var(--radius);
     overflow: hidden;
