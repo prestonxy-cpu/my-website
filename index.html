@@ -7,6 +7,7 @@
     <meta name="description" content="30年期美国国债期货实时监控平台，经济数据影响分析，收益率曲线追踪">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <script src="https://unpkg.com/lightweight-charts@4.1.7/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body>
 
@@ -24,37 +25,24 @@
         </div>
     </header>
 
-    <!-- ========== Ticker Tape ========== -->
-    <div class="ticker-wrapper">
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-            {
-                "symbols": [
-                    {"description": "30年美债", "proName": "CBOT:ZB1!"},
-                    {"description": "10年美债", "proName": "CBOT:ZN1!"},
-                    {"description": "5年美债", "proName": "CBOT:ZF1!"},
-                    {"description": "2年美债", "proName": "CBOT:ZT1!"},
-                    {"description": "美元指数", "proName": "TVC:DXY"},
-                    {"description": "黄金", "proName": "COMEX:GC1!"},
-                    {"description": "标普500", "proName": "CME_MINI:ES1!"},
-                    {"description": "30年收益率", "proName": "TVC:US30Y"}
-                ],
-                "showSymbolLogo": true,
-                "isTransparent": false,
-                "displayMode": "regular",
-                "colorTheme": "light",
-                "locale": "zh_CN"
-            }
-            </script>
-        </div>
+    <!-- ========== Custom Ticker Bar ========== -->
+    <div class="ticker-bar" id="tickerBar">
+        <div class="ticker-item" data-sym="ZB=F"><span class="ticker-label">ZB 30年</span><span class="ticker-price" id="tp-ZB">--</span><span class="ticker-chg" id="tc-ZB"></span></div>
+        <div class="ticker-item" data-sym="ZN=F"><span class="ticker-label">ZN 10年</span><span class="ticker-price" id="tp-ZN">--</span><span class="ticker-chg" id="tc-ZN"></span></div>
+        <div class="ticker-item" data-sym="ZF=F"><span class="ticker-label">ZF 5年</span><span class="ticker-price" id="tp-ZF">--</span><span class="ticker-chg" id="tc-ZF"></span></div>
+        <div class="ticker-item" data-sym="ZT=F"><span class="ticker-label">ZT 2年</span><span class="ticker-price" id="tp-ZT">--</span><span class="ticker-chg" id="tc-ZT"></span></div>
+        <div class="ticker-sep"></div>
+        <div class="ticker-item" data-sym="DX-Y.NYB"><span class="ticker-label">美元指数</span><span class="ticker-price" id="tp-DX">--</span><span class="ticker-chg" id="tc-DX"></span></div>
+        <div class="ticker-item" data-sym="GC=F"><span class="ticker-label">黄金</span><span class="ticker-price" id="tp-GC">--</span><span class="ticker-chg" id="tc-GC"></span></div>
+        <div class="ticker-item" data-sym="ES=F"><span class="ticker-label">标普500</span><span class="ticker-price" id="tp-ES">--</span><span class="ticker-chg" id="tc-ES"></span></div>
+        <div class="ticker-item" data-sym="^VIX"><span class="ticker-label">VIX</span><span class="ticker-price" id="tp-VIX">--</span><span class="ticker-chg" id="tc-VIX"></span></div>
     </div>
 
     <!-- ========== Navigation ========== -->
     <nav class="main-nav" id="mainNav">
         <div class="nav-scroll">
             <a href="#chart" class="nav-tab active">实时行情</a>
-            <a href="#yield-curve" class="nav-tab">收益率</a>
+            <a href="#yield-curve" class="nav-tab">期货概览</a>
             <a href="#data-review" class="nav-tab">数据回顾</a>
             <a href="#calendar" class="nav-tab">经济日历</a>
             <a href="#markets" class="nav-tab">关联市场</a>
@@ -69,34 +57,24 @@
             <div class="section-header">
                 <h2>实时行情</h2>
                 <div class="chart-tabs" id="chartTabs">
-                    <button class="chart-tab active" data-symbol="CBOT:ZB1!">30年期</button>
-                    <button class="chart-tab" data-symbol="CBOT:ZN1!">10年期</button>
-                    <button class="chart-tab" data-symbol="CBOT:ZF1!">5年期</button>
-                    <button class="chart-tab" data-symbol="CBOT:ZT1!">2年期</button>
+                    <button class="chart-tab active" data-symbol="ZB=F">30年期</button>
+                    <button class="chart-tab" data-symbol="ZN=F">10年期</button>
+                    <button class="chart-tab" data-symbol="ZF=F">5年期</button>
+                    <button class="chart-tab" data-symbol="ZT=F">2年期</button>
                 </div>
             </div>
-            <div class="chart-container" id="chartContainer">
-                <div class="tradingview-widget-container" style="height:100%;width:100%">
-                    <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-                    {
-                        "autosize": true,
-                        "symbol": "CBOT:ZB1!",
-                        "interval": "60",
-                        "timezone": "Asia/Shanghai",
-                        "theme": "light",
-                        "style": "1",
-                        "locale": "zh_CN",
-                        "allow_symbol_change": true,
-                        "calendar": true,
-                        "hide_top_toolbar": false,
-                        "hide_legend": false,
-                        "save_image": true,
-                        "studies": ["MASimple@tv-basicstudies", "Volume@tv-basicstudies"],
-                        "support_host": "https://www.tradingview.com"
-                    }
-                    </script>
+            <div class="price-header" id="priceHeader">
+                <div class="price-left">
+                    <span class="price-symbol" id="priceSymbol">ZB (30年期美债期货)</span>
+                    <span class="price-current" id="priceCurrent">加载中...</span>
+                    <span class="price-change" id="priceChange"></span>
                 </div>
+                <div class="price-right">
+                    <span class="data-delay">数据延迟约15分钟</span>
+                </div>
+            </div>
+            <div class="chart-box">
+                <div class="chart-container" id="mainChartContainer"></div>
             </div>
         </section>
 
@@ -104,41 +82,37 @@
         <section class="section" id="yield-curve">
             <div class="section-header">
                 <h2>各期限国债期货</h2>
-                <span class="section-badge">实时</span>
+                <span class="section-badge">延迟~15分钟</span>
             </div>
             <p class="section-note">期货价格与收益率反向运动：收益率上升 → 期货价格下跌</p>
             <div class="yield-cards">
                 <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CBOT:ZT1!","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="yield-card-header">
+                        <span class="yield-card-title">2年期 ZT</span>
+                        <div class="yield-card-info" id="yi-ZT"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-ZT"></div>
                 </div>
                 <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CBOT:ZF1!","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="yield-card-header">
+                        <span class="yield-card-title">5年期 ZF</span>
+                        <div class="yield-card-info" id="yi-ZF"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-ZF"></div>
                 </div>
                 <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CBOT:ZN1!","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="yield-card-header">
+                        <span class="yield-card-title">10年期 ZN</span>
+                        <div class="yield-card-info" id="yi-ZN"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-ZN"></div>
                 </div>
                 <div class="yield-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CBOT:ZB1!","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="yield-card-header">
+                        <span class="yield-card-title">30年期 ZB</span>
+                        <div class="yield-card-info" id="yi-ZB"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-ZB"></div>
                 </div>
             </div>
         </section>
@@ -149,14 +123,8 @@
                 <h2>数据走势回顾</h2>
                 <a href="javascript:void(0)" class="section-link" id="probExplainBtn">行情走势概率说明 <span class="info-icon">&#9432;</span></a>
             </div>
-
-            <!-- Latest Data Card -->
             <div class="impact-summary" id="impactSummary"></div>
-
-            <!-- Probability Bar -->
             <div class="impact-prob" id="impactProb"></div>
-
-            <!-- Data Type Tabs -->
             <div class="data-tabs" id="dataTabs">
                 <button class="data-tab active" data-filter="bond">30年美债</button>
                 <button class="data-tab" data-filter="10y">10年美债</button>
@@ -164,8 +132,6 @@
                 <button class="data-tab" data-filter="gold">黄金</button>
                 <button class="data-tab" data-filter="sp500">标普500</button>
             </div>
-
-            <!-- Data Table -->
             <div class="data-table-wrapper">
                 <table class="data-table">
                     <thead>
@@ -184,7 +150,7 @@
             </div>
         </section>
 
-        <!-- ========== Economic Calendar ========== -->
+        <!-- ========== Economic Calendar (TradingView - no symbol restriction) ========== -->
         <section class="section" id="calendar">
             <div class="section-header">
                 <h2>经济数据日历</h2>
@@ -215,36 +181,32 @@
             </div>
             <div class="markets-grid">
                 <div class="market-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"TVC:DXY","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="market-card-header">
+                        <span class="market-card-title">美元指数 DXY</span>
+                        <div class="market-card-info" id="mi-DX"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-DX"></div>
                 </div>
                 <div class="market-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"COMEX:GC1!","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="market-card-header">
+                        <span class="market-card-title">黄金 GC</span>
+                        <div class="market-card-info" id="mi-GC"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-GC"></div>
                 </div>
                 <div class="market-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CME_MINI:ES1!","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="market-card-header">
+                        <span class="market-card-title">标普500 ES</span>
+                        <div class="market-card-info" id="mi-ES"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-ES"></div>
                 </div>
                 <div class="market-card">
-                    <div class="tradingview-widget-container">
-                        <div class="tradingview-widget-container__widget"></div>
-                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-                        {"symbol":"CBOE:VIX","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
-                        </script>
+                    <div class="market-card-header">
+                        <span class="market-card-title">VIX 恐慌指数</span>
+                        <div class="market-card-info" id="mi-VIX"><span class="loading-text">加载中</span></div>
                     </div>
+                    <div class="mini-chart" id="mc-VIX"></div>
                 </div>
             </div>
         </section>
@@ -255,62 +217,14 @@
                 <h2>快速资讯入口</h2>
             </div>
             <div class="resources-grid">
-                <a href="https://www.cmegroup.com/markets/interest-rates/us-treasury/30-year-us-treasury-bond.html" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">📊</div>
-                    <div class="resource-info">
-                        <h3>CME 30年美债</h3>
-                        <p>官方合约数据与持仓报告</p>
-                    </div>
-                </a>
-                <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">🏛️</div>
-                    <div class="resource-info">
-                        <h3>CME FedWatch</h3>
-                        <p>美联储利率概率预测工具</p>
-                    </div>
-                </a>
-                <a href="https://www.investing.com/economic-calendar/" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">📅</div>
-                    <div class="resource-info">
-                        <h3>Investing.com</h3>
-                        <p>全球经济数据日历</p>
-                    </div>
-                </a>
-                <a href="https://www.reuters.com/markets/rates-bonds/" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">📰</div>
-                    <div class="resource-info">
-                        <h3>Reuters 债市</h3>
-                        <p>实时债券市场资讯</p>
-                    </div>
-                </a>
-                <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">📈</div>
-                    <div class="resource-info">
-                        <h3>FRED 经济数据</h3>
-                        <p>美联储经济数据库</p>
-                    </div>
-                </a>
-                <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">🇺🇸</div>
-                    <div class="resource-info">
-                        <h3>美国财政部</h3>
-                        <p>国债收益率官方数据</p>
-                    </div>
-                </a>
-                <a href="https://www.federalreserve.gov/" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">🏦</div>
-                    <div class="resource-info">
-                        <h3>美联储 Fed</h3>
-                        <p>货币政策与官方声明</p>
-                    </div>
-                </a>
-                <a href="https://www.bls.gov/" target="_blank" rel="noopener" class="resource-card">
-                    <div class="resource-icon">📋</div>
-                    <div class="resource-info">
-                        <h3>BLS 劳工统计局</h3>
-                        <p>就业、CPI等核心数据发布</p>
-                    </div>
-                </a>
+                <a href="https://www.cmegroup.com/markets/interest-rates/us-treasury/30-year-us-treasury-bond.html" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">📊</div><div class="resource-info"><h3>CME 30年美债</h3><p>官方合约数据与持仓报告</p></div></a>
+                <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">🏛️</div><div class="resource-info"><h3>CME FedWatch</h3><p>美联储利率概率预测工具</p></div></a>
+                <a href="https://www.investing.com/economic-calendar/" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">📅</div><div class="resource-info"><h3>Investing.com</h3><p>全球经济数据日历</p></div></a>
+                <a href="https://www.reuters.com/markets/rates-bonds/" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">📰</div><div class="resource-info"><h3>Reuters 债市</h3><p>实时债券市场资讯</p></div></a>
+                <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">📈</div><div class="resource-info"><h3>FRED 经济数据</h3><p>美联储经济数据库</p></div></a>
+                <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">🇺🇸</div><div class="resource-info"><h3>美国财政部</h3><p>国债收益率官方数据</p></div></a>
+                <a href="https://www.federalreserve.gov/" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">🏦</div><div class="resource-info"><h3>美联储 Fed</h3><p>货币政策与官方声明</p></div></a>
+                <a href="https://www.bls.gov/" target="_blank" rel="noopener" class="resource-card"><div class="resource-icon">📋</div><div class="resource-info"><h3>BLS 劳工统计局</h3><p>就业、CPI等核心数据发布</p></div></a>
             </div>
         </section>
 
@@ -321,14 +235,7 @@
             </div>
             <div class="ref-table-wrapper">
                 <table class="ref-table">
-                    <thead>
-                        <tr>
-                            <th>经济指标</th>
-                            <th>数据强于预期</th>
-                            <th>数据弱于预期</th>
-                            <th>影响逻辑</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>经济指标</th><th>数据强于预期</th><th>数据弱于预期</th><th>影响逻辑</th></tr></thead>
                     <tbody>
                         <tr><td class="indicator-name">非农就业 (NFP)</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>就业强劲 → 加息预期 → 债价下跌</td></tr>
                         <tr><td class="indicator-name">CPI 消费者物价</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>通胀高企 → 加息 → 收益率升 → 债价跌</td></tr>
@@ -347,9 +254,8 @@
 
     </main>
 
-    <!-- ========== Footer ========== -->
     <footer class="footer">
-        <p>美债期货实时监控 | 图表数据来源: TradingView</p>
+        <p>美债期货实时监控 | 图表数据来源: Yahoo Finance (延迟约15分钟)</p>
         <p>本站仅供信息参考，不构成任何投资建议</p>
     </footer>
 
