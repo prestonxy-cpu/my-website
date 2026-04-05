@@ -3,234 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>你的名字 — 个人品牌</title>
+    <title>美债期货实时监控 | 30年期国债期货监测平台</title>
+    <meta name="description" content="30年期美国国债期货实时监控平台，经济数据影响分析，收益率曲线追踪">
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">YourName</a>
-            <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">首页</a></li>
-                <li><a href="#about">关于我</a></li>
-                <li><a href="#services">服务</a></li>
-                <li><a href="#contact">联系</a></li>
-            </ul>
+
+    <!-- ========== Top Header ========== -->
+    <header class="top-header">
+        <div class="header-container">
+            <div class="header-left">
+                <h1 class="logo">美债监控</h1>
+                <span class="logo-sub">Treasury Futures Monitor</span>
+            </div>
+            <div class="header-right">
+                <span class="clock" id="clock"></span>
+                <span class="market-status" id="marketStatus"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== Ticker Tape ========== -->
+    <div class="ticker-wrapper">
+        <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+                "symbols": [
+                    {"description": "30年美债", "proName": "CBOT:ZB1!"},
+                    {"description": "10年美债", "proName": "CBOT:ZN1!"},
+                    {"description": "5年美债", "proName": "CBOT:ZF1!"},
+                    {"description": "2年美债", "proName": "CBOT:ZT1!"},
+                    {"description": "美元指数", "proName": "TVC:DXY"},
+                    {"description": "黄金", "proName": "COMEX:GC1!"},
+                    {"description": "标普500", "proName": "CME_MINI:ES1!"},
+                    {"description": "30年收益率", "proName": "TVC:US30Y"}
+                ],
+                "showSymbolLogo": true,
+                "isTransparent": false,
+                "displayMode": "regular",
+                "colorTheme": "light",
+                "locale": "zh_CN"
+            }
+            </script>
+        </div>
+    </div>
+
+    <!-- ========== Navigation ========== -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-scroll">
+            <a href="#chart" class="nav-tab active">实时行情</a>
+            <a href="#yield-curve" class="nav-tab">收益率</a>
+            <a href="#data-review" class="nav-tab">数据回顾</a>
+            <a href="#calendar" class="nav-tab">经济日历</a>
+            <a href="#markets" class="nav-tab">关联市场</a>
+            <a href="#resources" class="nav-tab">资讯入口</a>
         </div>
     </nav>
 
-    <!-- 首页大标题 -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <p class="hero-greeting">你好，我是</p>
-            <h1 class="hero-title">你的名字</h1>
-            <p class="hero-subtitle">创意设计师 / 品牌顾问 / 自由职业者</p>
-            <p class="hero-desc">帮助品牌找到独特的视觉语言，让每一次呈现都令人难忘。</p>
-            <div class="hero-buttons">
-                <a href="#services" class="btn btn-primary">了解我的服务</a>
-                <a href="#contact" class="btn btn-outline">与我联系</a>
-            </div>
-        </div>
-        <div class="hero-decoration">
-            <div class="hero-circle"></div>
-            <div class="hero-circle hero-circle-2"></div>
-        </div>
-    </section>
+    <main class="main-content">
 
-    <!-- 个人介绍 -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="section-label">关于我</div>
-            <div class="about-grid">
-                <div class="about-image">
-                    <div class="about-image-placeholder">
-                        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="60" cy="45" r="22" stroke="currentColor" stroke-width="2"/>
-                            <path d="M20 105c0-22 18-40 40-40s40 18 40 40" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                        <span>放置你的照片</span>
-                    </div>
-                </div>
-                <div class="about-text">
-                    <h2>打造有温度的品牌体验</h2>
-                    <p>
-                        我是一名拥有 8 年经验的设计师与品牌顾问。我相信好的设计不仅仅是视觉上的美感，更是一种沟通方式 —— 它能让你的品牌故事被更多人听到。
-                    </p>
-                    <p>
-                        从品牌策略到视觉执行，我为每一位客户提供量身定制的解决方案。无论你是初创企业还是成熟品牌，我都能帮你找到最适合的表达方式。
-                    </p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <span class="stat-number">8+</span>
-                            <span class="stat-label">年经验</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">200+</span>
-                            <span class="stat-label">完成项目</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">50+</span>
-                            <span class="stat-label">合作客户</span>
-                        </div>
-                    </div>
+        <!-- ========== Real-time Chart ========== -->
+        <section class="section" id="chart">
+            <div class="section-header">
+                <h2>实时行情</h2>
+                <div class="chart-tabs" id="chartTabs">
+                    <button class="chart-tab active" data-symbol="CBOT:ZB1!">30年期</button>
+                    <button class="chart-tab" data-symbol="CBOT:ZN1!">10年期</button>
+                    <button class="chart-tab" data-symbol="CBOT:ZF1!">5年期</button>
+                    <button class="chart-tab" data-symbol="CBOT:ZT1!">2年期</button>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- 服务列表 -->
-    <section class="services" id="services">
-        <div class="container">
-            <div class="section-label">我的服务</div>
-            <h2 class="section-title">我能为你做什么</h2>
-            <p class="section-subtitle">提供从策略到执行的全方位品牌服务</p>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="6" width="36" height="36" rx="4" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="2"/>
-                            <path d="M24 16v-4M24 36v-4M32 24h4M12 24h4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>品牌设计</h3>
-                    <p>从 Logo 到完整视觉系统，构建令人过目不忘的品牌形象。包含色彩体系、字体规范和应用指南。</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="8" width="40" height="28" rx="3" stroke="currentColor" stroke-width="2"/>
-                            <path d="M4 16h40" stroke="currentColor" stroke-width="2"/>
-                            <circle cx="10" cy="12" r="1.5" fill="currentColor"/>
-                            <circle cx="16" cy="12" r="1.5" fill="currentColor"/>
-                            <path d="M12 24h24M12 30h16" stroke="currentColor" stroke-width="2"/>
-                            <path d="M16 40l8 4 8-4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>网站设计</h3>
-                    <p>响应式网页设计与开发，确保你的品牌在数字世界中同样出色。注重用户体验和转化率。</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 12h32v28H8z" stroke="currentColor" stroke-width="2"/>
-                            <path d="M16 12V8h16v4" stroke="currentColor" stroke-width="2"/>
-                            <path d="M8 22h32" stroke="currentColor" stroke-width="2"/>
-                            <path d="M20 22v6h8v-6" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>品牌咨询</h3>
-                    <p>深入分析市场定位与竞争格局，制定清晰的品牌策略。帮你在竞争中脱颖而出。</p>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="8" y="4" width="20" height="28" rx="2" stroke="currentColor" stroke-width="2"/>
-                            <rect x="20" y="16" width="20" height="28" rx="2" stroke="currentColor" stroke-width="2"/>
-                            <path d="M14 12h8M14 18h8M14 24h4" stroke="currentColor" stroke-width="2"/>
-                            <path d="M26 24h8M26 30h8M26 36h4" stroke="currentColor" stroke-width="2"/>
-                        </svg>
-                    </div>
-                    <h3>内容创作</h3>
-                    <p>社交媒体运营、文案撰写和视觉内容制作，持续输出高质量的品牌内容。</p>
+            <div class="chart-container" id="chartContainer">
+                <div class="tradingview-widget-container" style="height:100%;width:100%">
+                    <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                    {
+                        "autosize": true,
+                        "symbol": "CBOT:ZB1!",
+                        "interval": "60",
+                        "timezone": "Asia/Shanghai",
+                        "theme": "light",
+                        "style": "1",
+                        "locale": "zh_CN",
+                        "allow_symbol_change": true,
+                        "calendar": true,
+                        "hide_top_toolbar": false,
+                        "hide_legend": false,
+                        "save_image": true,
+                        "studies": ["MASimple@tv-basicstudies", "Volume@tv-basicstudies"],
+                        "support_host": "https://www.tradingview.com"
+                    }
+                    </script>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 联系方式 -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-label">联系我</div>
-            <h2 class="section-title">一起开始吧</h2>
-            <p class="section-subtitle">有想法？有项目？随时与我联系</p>
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <rect x="2" y="4" width="20" height="16" rx="2"/>
-                                <path d="M22 4L12 13 2 4"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4>邮箱</h4>
-                            <p>hello@yourname.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4>电话</h4>
-                            <p>+86 138 0000 0000</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4>地址</h4>
-                            <p>上海市静安区某某路 123 号</p>
-                        </div>
-                    </div>
-                    <div class="contact-socials">
-                        <a href="#" class="social-link" aria-label="微信">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.655 4.998c-2.126 0-4.078.58-5.466 1.735-1.345 1.12-2.067 2.635-2.067 4.29 0 1.654.722 3.17 2.067 4.29 1.388 1.155 3.34 1.735 5.466 1.735.834 0 1.654-.1 2.44-.346a.72.72 0 01.597.082l1.586.927a.272.272 0 00.139.045c.133 0 .241-.11.241-.245 0-.06-.024-.12-.04-.178l-.326-1.233a.49.49 0 01.177-.554C22.018 20.4 23 18.655 23 17.013c0-1.654-.722-3.17-2.067-4.29-1.388-1.155-3.34-1.734-5.48-1.734zm-2.582 2.927c.536 0 .969.44.969.983a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.544.433-.983.97-.983zm5.164 0c.536 0 .969.44.969.983a.976.976 0 01-.969.983.976.976 0 01-.969-.983c0-.544.433-.983.97-.983z"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="微博">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zm-1.921-6.168c-2.443.453-3.783 2.086-3.204 3.69.564 1.561 2.726 2.287 5.152 1.631 2.428-.656 3.863-2.584 3.237-4.219-.602-1.572-2.721-2.55-5.185-1.102z"/><path d="M20.717 7.566c-.612-1.508-2.021-2.508-3.517-2.78l.332-1.482c1.963.37 3.833 1.677 4.663 3.724l-1.478.538zm-2.214-.57c-.457-.862-1.223-1.348-2.13-1.45l.23-1.508c1.377.144 2.582.895 3.277 2.247l-1.377.711z"/><path d="M17.152 14.906c-.209 3.834-3.397 6.725-7.352 6.678-3.412-.039-5.865-2.178-5.814-5.186.057-3.334 3.167-6.504 7.082-6.596 4.011-.09 6.294 1.923 6.084 5.104z"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="小红书">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 14.5h-9v-1h9v1zm0-3h-9v-1h9v1zm0-3h-9v-1h9v1zm0-3h-9v-1h9v1z"/></svg>
-                        </a>
-                        <a href="#" class="social-link" aria-label="LinkedIn">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                        </a>
+        <!-- ========== Yield Curve ========== -->
+        <section class="section" id="yield-curve">
+            <div class="section-header">
+                <h2>收益率曲线</h2>
+                <span class="section-badge">实时</span>
+            </div>
+            <div class="yield-cards">
+                <div class="yield-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"TVC:US02Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
                     </div>
                 </div>
-                <form class="contact-form" onsubmit="handleSubmit(event)">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="你的姓名" required>
+                <div class="yield-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"TVC:US05Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
                     </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="你的邮箱" required>
+                </div>
+                <div class="yield-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"TVC:US10Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
                     </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="5" placeholder="告诉我你的想法..." required></textarea>
+                </div>
+                <div class="yield-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"TVC:US30Y","width":"100%","height":"178","locale":"zh_CN","dateRange":"1M","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">发送消息</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 页脚 -->
+        <!-- ========== Data Review (Screenshot Style) ========== -->
+        <section class="section" id="data-review">
+            <div class="section-header">
+                <h2>数据走势回顾</h2>
+                <a href="javascript:void(0)" class="section-link" id="probExplainBtn">行情走势概率说明 <span class="info-icon">&#9432;</span></a>
+            </div>
+
+            <!-- Latest Data Card -->
+            <div class="impact-summary" id="impactSummary"></div>
+
+            <!-- Probability Bar -->
+            <div class="impact-prob" id="impactProb"></div>
+
+            <!-- Data Type Tabs -->
+            <div class="data-tabs" id="dataTabs">
+                <button class="data-tab active" data-filter="bond">30年美债</button>
+                <button class="data-tab" data-filter="10y">10年美债</button>
+                <button class="data-tab" data-filter="usd">美元指数</button>
+                <button class="data-tab" data-filter="gold">黄金</button>
+                <button class="data-tab" data-filter="sp500">标普500</button>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>指标</th>
+                            <th>数值</th>
+                            <th>理论影响</th>
+                            <th>5分钟</th>
+                            <th>30分钟</th>
+                            <th>当日</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ========== Economic Calendar ========== -->
+        <section class="section" id="calendar">
+            <div class="section-header">
+                <h2>经济数据日历</h2>
+                <span class="section-badge">USD</span>
+            </div>
+            <div class="calendar-container">
+                <div class="tradingview-widget-container">
+                    <div class="tradingview-widget-container__widget"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
+                    {
+                        "colorTheme": "light",
+                        "isTransparent": true,
+                        "width": "100%",
+                        "height": "490",
+                        "locale": "zh_CN",
+                        "importanceFilter": "0,1",
+                        "countryFilter": "us"
+                    }
+                    </script>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== Related Markets ========== -->
+        <section class="section" id="markets">
+            <div class="section-header">
+                <h2>关联市场</h2>
+            </div>
+            <div class="markets-grid">
+                <div class="market-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"TVC:DXY","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"COMEX:GC1!","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"CME_MINI:ES1!","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
+                    </div>
+                </div>
+                <div class="market-card">
+                    <div class="tradingview-widget-container">
+                        <div class="tradingview-widget-container__widget"></div>
+                        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+                        {"symbol":"CBOE:VIX","width":"100%","height":"220","locale":"zh_CN","dateRange":"1D","colorTheme":"light","isTransparent":true,"autosize":false,"largeChartUrl":""}
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== Quick Resources ========== -->
+        <section class="section" id="resources">
+            <div class="section-header">
+                <h2>快速资讯入口</h2>
+            </div>
+            <div class="resources-grid">
+                <a href="https://www.cmegroup.com/markets/interest-rates/us-treasury/30-year-us-treasury-bond.html" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">📊</div>
+                    <div class="resource-info">
+                        <h3>CME 30年美债</h3>
+                        <p>官方合约数据与持仓报告</p>
+                    </div>
+                </a>
+                <a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">🏛️</div>
+                    <div class="resource-info">
+                        <h3>CME FedWatch</h3>
+                        <p>美联储利率概率预测工具</p>
+                    </div>
+                </a>
+                <a href="https://www.investing.com/economic-calendar/" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">📅</div>
+                    <div class="resource-info">
+                        <h3>Investing.com</h3>
+                        <p>全球经济数据日历</p>
+                    </div>
+                </a>
+                <a href="https://www.reuters.com/markets/rates-bonds/" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">📰</div>
+                    <div class="resource-info">
+                        <h3>Reuters 债市</h3>
+                        <p>实时债券市场资讯</p>
+                    </div>
+                </a>
+                <a href="https://fred.stlouisfed.org/" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">📈</div>
+                    <div class="resource-info">
+                        <h3>FRED 经济数据</h3>
+                        <p>美联储经济数据库</p>
+                    </div>
+                </a>
+                <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">🇺🇸</div>
+                    <div class="resource-info">
+                        <h3>美国财政部</h3>
+                        <p>国债收益率官方数据</p>
+                    </div>
+                </a>
+                <a href="https://www.federalreserve.gov/" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">🏦</div>
+                    <div class="resource-info">
+                        <h3>美联储 Fed</h3>
+                        <p>货币政策与官方声明</p>
+                    </div>
+                </a>
+                <a href="https://www.bls.gov/" target="_blank" rel="noopener" class="resource-card">
+                    <div class="resource-icon">📋</div>
+                    <div class="resource-info">
+                        <h3>BLS 劳工统计局</h3>
+                        <p>就业、CPI等核心数据发布</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========== Indicator Reference ========== -->
+        <section class="section" id="reference">
+            <div class="section-header">
+                <h2>关键指标对美债期货影响参考</h2>
+            </div>
+            <div class="ref-table-wrapper">
+                <table class="ref-table">
+                    <thead>
+                        <tr>
+                            <th>经济指标</th>
+                            <th>数据强于预期</th>
+                            <th>数据弱于预期</th>
+                            <th>影响逻辑</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="indicator-name">非农就业 (NFP)</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>就业强劲 → 加息预期 → 债价下跌</td></tr>
+                        <tr><td class="indicator-name">CPI 消费者物价</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>通胀高企 → 加息 → 收益率升 → 债价跌</td></tr>
+                        <tr><td class="indicator-name">PPI 生产者物价</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>生产成本升 → 通胀传导 → 利空债市</td></tr>
+                        <tr><td class="indicator-name">GDP 国内生产总值</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>经济增长 → 风险偏好升 → 资金流出债市</td></tr>
+                        <tr><td class="indicator-name">失业率</td><td><span class="badge badge-bullish">利多</span></td><td><span class="badge badge-bearish">利空</span></td><td>失业升 → 降息预期 → 债价上涨</td></tr>
+                        <tr><td class="indicator-name">美联储利率决议</td><td colspan="2" class="text-center"><span class="badge badge-neutral">视具体情况</span></td><td>加息=利空 / 降息=利多 / 鹰鸽措辞</td></tr>
+                        <tr><td class="indicator-name">ISM 制造业PMI</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>制造业扩张 → 经济向好 → 减少避险</td></tr>
+                        <tr><td class="indicator-name">零售销售</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>消费强劲 → 经济过热 → 利空债市</td></tr>
+                        <tr><td class="indicator-name">初请失业金</td><td><span class="badge badge-bullish">利多</span></td><td><span class="badge badge-bearish">利空</span></td><td>申请增加 → 劳动力疲软 → 降息预期</td></tr>
+                        <tr><td class="indicator-name">消费者信心指数</td><td><span class="badge badge-bearish">利空</span></td><td><span class="badge badge-bullish">利多</span></td><td>信心高涨 → 消费/通胀升 → 利空债市</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== Footer ========== -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p class="footer-logo">YourName</p>
-                <p class="footer-text">&copy; 2026 你的名字. 保留所有权利.</p>
-            </div>
-        </div>
+        <p>美债期货实时监控 | 图表数据来源: TradingView</p>
+        <p>本站仅供信息参考，不构成任何投资建议</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
