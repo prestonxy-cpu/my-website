@@ -438,7 +438,119 @@ a { text-decoration: none; color: inherit; }
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow);
-    padding: 4px;
+}
+
+.calendar-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.cal-imp {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    font-size: 0.7rem;
+    line-height: 10px;
+    text-indent: 14px;
+    white-space: nowrap;
+    color: var(--text-muted);
+}
+
+.cal-imp-high { background: var(--red); }
+.cal-imp-med { background: var(--orange); }
+.cal-imp-low { background: #ccc; }
+.cal-legend-text { font-size: 0.72rem; color: var(--text-muted); }
+.cal-tz { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+
+.cal-date-group { border-bottom: 1px solid #f0f0f0; }
+.cal-date-group:last-child { border-bottom: none; }
+
+.cal-date-header {
+    padding: 10px 16px 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    background: #fafafa;
+}
+
+.cal-event {
+    display: grid;
+    grid-template-columns: 56px 12px 1fr auto auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f8f8f8;
+    font-size: 0.82rem;
+}
+
+.cal-event:last-child { border-bottom: none; }
+
+.cal-time {
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8rem;
+}
+
+.cal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.cal-dot.high { background: var(--red); }
+.cal-dot.med { background: var(--orange); }
+.cal-dot.low { background: #ccc; }
+
+.cal-name {
+    font-weight: 500;
+    color: var(--text);
+}
+
+.cal-name-en {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.cal-val {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.cal-val-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    display: block;
+}
+
+.calendar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.calendar-footer a {
+    font-size: 0.78rem;
+    color: var(--blue);
+}
+
+@media (max-width: 640px) {
+    .cal-event {
+        grid-template-columns: 50px 10px 1fr;
+        gap: 6px;
+    }
+    .cal-val { display: none; }
 }
 
 /* ========== Markets Grid ========== */

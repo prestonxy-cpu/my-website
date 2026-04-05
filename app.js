@@ -365,6 +365,91 @@ function initProbExplain() {
     });
 }
 
+// ========================================================================
+// Economic Calendar (Chinese)
+// ========================================================================
+// importance: 3=high, 2=medium, 1=low
+const calendarEvents = [
+    { date:'2026-04-07', time:'22:00', name:'美国2月工厂订单', en:'Factory Orders', imp:2, prev:'+1.7%', fore:'+0.5%' },
+    { date:'2026-04-08', time:'06:00', name:'美国2月消费信贷', en:'Consumer Credit', imp:2, prev:'$18.1B', fore:'$15.0B' },
+    { date:'2026-04-09', time:'02:00', name:'FOMC会议纪要', en:'FOMC Minutes', imp:3 },
+    { date:'2026-04-10', time:'20:30', name:'美国3月CPI消费者物价指数', en:'CPI', imp:3, prev:'2.8%', fore:'2.6%' },
+    { date:'2026-04-10', time:'20:30', name:'美国当周初请失业金', en:'Initial Jobless Claims', imp:2, prev:'219K', fore:'223K' },
+    { date:'2026-04-11', time:'20:30', name:'美国3月PPI生产者物价指数', en:'PPI', imp:3, prev:'3.2%', fore:'3.3%' },
+    { date:'2026-04-14', time:'20:30', name:'美国3月进出口物价指数', en:'Import/Export Prices', imp:1 },
+    { date:'2026-04-15', time:'20:30', name:'美国3月零售销售月率', en:'Retail Sales MM', imp:3, prev:'0.2%', fore:'1.3%' },
+    { date:'2026-04-15', time:'22:00', name:'美国4月NAHB房屋市场指数', en:'NAHB Housing Index', imp:2, prev:'39' },
+    { date:'2026-04-16', time:'20:30', name:'美国3月新屋开工', en:'Housing Starts', imp:2, prev:'1.501M', fore:'1.420M' },
+    { date:'2026-04-16', time:'20:30', name:'美国3月建筑许可', en:'Building Permits', imp:2, prev:'1.456M', fore:'1.450M' },
+    { date:'2026-04-17', time:'20:30', name:'美国当周初请失业金', en:'Initial Jobless Claims', imp:2 },
+    { date:'2026-04-17', time:'20:30', name:'费城联储制造业指数', en:'Philadelphia Fed Index', imp:2, prev:'12.5' },
+    { date:'2026-04-22', time:'22:00', name:'美国3月成屋销售', en:'Existing Home Sales', imp:2, prev:'4.26M' },
+    { date:'2026-04-23', time:'20:30', name:'美国当周初请失业金', en:'Initial Jobless Claims', imp:2 },
+    { date:'2026-04-23', time:'21:45', name:'标普全球综合PMI初值', en:'S&P Global PMI Flash', imp:2, prev:'53.5' },
+    { date:'2026-04-24', time:'20:30', name:'美国3月耐用品订单', en:'Durable Goods Orders', imp:3, prev:'+0.9%' },
+    { date:'2026-04-24', time:'22:00', name:'美国3月新屋销售', en:'New Home Sales', imp:2, prev:'676K' },
+    { date:'2026-04-25', time:'22:00', name:'密歇根消费者信心指数终值', en:'Michigan Sentiment Final', imp:2, prev:'57.0' },
+    { date:'2026-04-29', time:'22:00', name:'谘商会消费者信心指数', en:'CB Consumer Confidence', imp:3, prev:'92.9' },
+    { date:'2026-04-29', time:'22:00', name:'JOLTS职位空缺', en:'JOLTS Job Openings', imp:3, prev:'7.57M' },
+    { date:'2026-04-30', time:'20:15', name:'ADP就业人数', en:'ADP Employment', imp:2, prev:'155K' },
+    { date:'2026-04-30', time:'20:30', name:'美国Q1 GDP初值(年化季率)', en:'GDP Advance Q/Q', imp:3, prev:'+2.4%' },
+    { date:'2026-04-30', time:'20:30', name:'美国Q1核心PCE物价指数', en:'Core PCE Prices Q/Q', imp:3, prev:'+2.6%' },
+    { date:'2026-05-01', time:'20:30', name:'美国当周初请失业金', en:'Initial Jobless Claims', imp:2 },
+    { date:'2026-05-01', time:'22:00', name:'ISM制造业PMI', en:'ISM Manufacturing PMI', imp:3, prev:'50.3' },
+    { date:'2026-05-02', time:'20:30', name:'美国4月非农就业', en:'Non-Farm Payrolls', imp:3, prev:'228K', fore:'138K' },
+    { date:'2026-05-02', time:'20:30', name:'美国4月失业率', en:'Unemployment Rate', imp:3, prev:'4.2%', fore:'4.2%' },
+    { date:'2026-05-05', time:'22:00', name:'ISM非制造业PMI', en:'ISM Services PMI', imp:3, prev:'50.8' },
+    { date:'2026-05-07', time:'02:00', name:'美联储利率决议', en:'Fed Rate Decision', imp:3, prev:'4.25-4.50%' },
+    { date:'2026-05-07', time:'02:30', name:'美联储主席鲍威尔新闻发布会', en:'Fed Press Conference', imp:3 },
+    { date:'2026-05-13', time:'20:30', name:'美国4月CPI消费者物价指数', en:'CPI', imp:3, prev:'2.4%' },
+    { date:'2026-05-14', time:'20:30', name:'美国4月PPI生产者物价指数', en:'PPI', imp:3 },
+    { date:'2026-05-15', time:'20:30', name:'美国4月零售销售', en:'Retail Sales', imp:3 },
+    { date:'2026-05-15', time:'20:30', name:'美国当周初请失业金', en:'Initial Jobless Claims', imp:2 },
+    { date:'2026-05-16', time:'22:00', name:'密歇根消费者信心指数初值', en:'Michigan Sentiment Prelim', imp:2 },
+];
+
+function renderCalendar() {
+    const container = document.getElementById('calendarContent');
+    if (!container) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+    const grouped = {};
+    calendarEvents.forEach(ev => {
+        if (!grouped[ev.date]) grouped[ev.date] = [];
+        grouped[ev.date].push(ev);
+    });
+
+    const weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+    let html = '';
+
+    Object.keys(grouped).sort().forEach(date => {
+        const d = new Date(date + 'T00:00:00');
+        const m = d.getMonth() + 1;
+        const day = d.getDate();
+        const wd = weekdays[d.getDay()];
+        const isPast = date < today;
+        const isToday = date === today;
+
+        html += '<div class="cal-date-group">';
+        html += '<div class="cal-date-header">' + m + '月' + day + '日 ' + wd + (isToday ? ' <span style="color:var(--red);font-size:0.75rem">今天</span>' : '') + '</div>';
+
+        grouped[date].forEach(ev => {
+            const dotClass = ev.imp === 3 ? 'high' : ev.imp === 2 ? 'med' : 'low';
+            html += '<div class="cal-event" style="' + (isPast ? 'opacity:0.5' : '') + '">'
+                + '<span class="cal-time">' + ev.time + '</span>'
+                + '<span class="cal-dot ' + dotClass + '"></span>'
+                + '<span class="cal-name">' + ev.name + '<br><span class="cal-name-en">' + ev.en + '</span></span>'
+                + '<span class="cal-val">' + (ev.prev ? ev.prev + '<span class="cal-val-label">前值</span>' : '') + '</span>'
+                + '<span class="cal-val">' + (ev.fore ? ev.fore + '<span class="cal-val-label">预期</span>' : '') + '</span>'
+                + '<span class="cal-val"></span>'
+                + '</div>';
+        });
+        html += '</div>';
+    });
+
+    container.innerHTML = html;
+}
+
 // ── Init ──
 document.addEventListener('DOMContentLoaded', async () => {
     // Static content first
@@ -373,6 +458,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderDataTable(economicData);
     initDataTabs();
     initChartTabs();
+    renderCalendar();
     initNavHighlight();
     initProbExplain();
     initSmoothScroll();
