@@ -1,4 +1,95 @@
 import type { GlossaryEntry } from '../types'
 
-/** 占位文件：将由内容生成流程替换为完整词汇表 */
-export const glossary: GlossaryEntry[] = []
+/** 词汇表：覆盖课程全部核心术语。example 中的数值均出自 Notebook。 */
+export const glossary: GlossaryEntry[] = [
+  /* ---------------- CPI 基础 ---------------- */
+  { id: 'cpi', zh: '消费者价格指数', en: 'CPI (Consumer Price Index)', category: 'CPI 基础', definition: '衡量普通家庭购买一篮子商品和服务价格水平的指数，是最常用的通胀指标。', example: '本项目预测 CPI 的 Food 组件。', lessonId: 'm0-l1' },
+  { id: 'headline-cpi', zh: '整体 CPI', en: 'Headline CPI', category: 'CPI 基础', definition: '包含所有商品与服务的总 CPI，新闻里说的"通胀率"通常指它。', example: 'Food 对 Headline CPI 的贡献约 0.41 pp。', lessonId: 'm0-l2' },
+  { id: 'inflation-rate', zh: '通货膨胀率', en: 'Inflation Rate', category: 'CPI 基础', definition: '价格水平的增长速度，通常用 CPI 的 YoY 变化率表示。', example: '2026-06 Food CPI YoY 通胀为 2.99%。', lessonId: 'm1-l1' },
+  { id: 'cpi-level', zh: 'CPI 指数水平', en: 'CPI Level', category: 'CPI 基础', definition: 'CPI 的原始指数值（如 349.6）。水平本身没有直观含义，变化率才是通胀。', example: 'Total Food CPI 2026-06 的 level 是 349.609。', lessonId: 'm1-l1' },
+  { id: 'mom', zh: '环比变化', en: 'MoM (Month-over-Month)', category: 'CPI 基础', definition: '与上个月比较的变化率。反应快但噪声大、受季节影响。', lessonId: 'm1-l2' },
+  { id: 'yoy', zh: '同比变化', en: 'YoY (Year-over-Year)', category: 'CPI 基础', definition: '与去年同月比较的百分比变化，自动消除季节性，是本项目所有价格序列的转换方式。', example: 'pct_change(12) × 100。', lessonId: 'm1-l2' },
+  { id: 'food-at-home', zh: '家庭食品', en: 'Food at Home', category: 'CPI 基础', definition: '在商店购买、回家做饭的食品（杂货）。主要跟随食品供应链成本。', example: 'FRED: CUSR0000SAF11，relative importance 8.188。', lessonId: 'm1-l3' },
+  { id: 'food-away', zh: '在外饮食', en: 'Food Away from Home', category: 'CPI 基础', definition: '餐馆、外卖等餐饮服务，一半以上成本是人工与服务。', example: 'FRED: CUSR0000SEFV，relative importance 5.260。', lessonId: 'm1-l3' },
+  { id: 'relative-importance', zh: '相对重要性权重', en: 'Relative Importance', category: 'CPI 基础', definition: 'BLS 公布的各 CPI 组件在总指数中的占比权重。', example: 'Total Food = 13.447（2026-06 发布）。', lessonId: 'm10-l1' },
+  { id: 'bottom-up', zh: '自下而上预测', en: 'Bottom-up Forecasting', category: 'CPI 基础', definition: '把整体拆成组件、分别预测、按权重加总回整体的方法。', example: '团队将 Headline CPI 拆成 Housing、Energy、Food 等。', lessonId: 'm0-l2' },
+
+  /* ---------------- 数据与转换 ---------------- */
+  { id: 'fred', zh: '圣路易斯联储数据库', en: 'FRED', category: '数据与转换', definition: 'Federal Reserve Economic Data，免费公开的宏观经济数据库，本项目 18 个序列全部来自这里。', lessonId: 'm2-l1' },
+  { id: 'ppi', zh: '生产者价格指数', en: 'PPI (Producer Price Index)', category: '数据与转换', definition: '衡量生产端（出厂）价格的指数，通常领先于消费端的 CPI。', example: 'WPU02（加工食品与饲料 PPI）是 Home 的主 predictor。', lessonId: 'm2-l2' },
+  { id: 'wpu02', zh: '加工食品与饲料 PPI', en: 'WPU02 (Processed Foods and Feeds PPI)', category: '数据与转换', definition: 'Food at Home 的 Primary Predictor，1947 年起有数据。', example: '2026-06 YoY = 1.63%，直接产出 2026-07 预测。', lessonId: 'm2-l2' },
+  { id: 'ces7-all', zh: '休闲酒店业平均时薪（全体）', en: 'CES7000000003 (L&H AHE, All Employees)', category: '数据与转换', definition: '休闲与酒店业全体员工的平均时薪，2006 年起。Food Away 的 Primary Predictor（lag 12）。', lessonId: 'm2-l2' },
+  { id: 'ces7-prod', zh: '休闲酒店业平均时薪（一线）', en: 'CES7000000008 (L&H AHE, Production)', category: '数据与转换', definition: '一线/非管理员工时薪，1964 年起、历史更长，用于 Long-history 与 Survey 模型（lag 2）。', lessonId: 'm2-l2' },
+  { id: 'diffusion-index', zh: '扩散指数', en: 'Diffusion Index', category: '数据与转换', definition: '"报告上涨的企业占比 − 报告下降的企业占比"的净差额指数。已经是变化方向的度量，必须保持 level 使用，不能再算 YoY。', example: 'Philly Fed Future Prices Received 2026-07 = 41.4。', lessonId: 'm3-l2' },
+  { id: 'philly-fed-survey', zh: '费城联储商业调查', en: 'Philadelphia Fed Survey', category: '数据与转换', definition: '费城联储的月度制造业调查，含未来售价预期等扩散指数。区域性、非食品专属——只作 Survey Sensitivity。', lessonId: 'm2-l3' },
+  { id: 'missing-values', zh: '缺失值', en: 'Missing Values', category: '数据与转换', definition: '未发布或无法获得的数据点。Notebook 的原则：保持缺失、不插值、不发明数据。', example: '2025-10 CPI 因联邦停摆缺失。', lessonId: 'm3-l3' },
+  { id: 'date-alignment', zh: '日期对齐', en: 'Date Alignment', category: '数据与转换', definition: '把所有序列放到完整的月度日历上，保证 shift(1) 恒等于 1 个日历月。', example: 'Cell 9 的 reindex(monthly_index)。', lessonId: 'm3-l3' },
+  { id: 'transform', zh: '数据转换', en: 'Transform', category: '数据与转换', definition: '把原始序列变成模型可用形式的规则：价格/工资用 yoy_pct，调查指数用 level。', example: '数据字典（Cell 7）为 18 个序列逐一登记转换规则。', lessonId: 'm3-l1' },
+  { id: 'vintage-alfred', zh: '历史数据版本', en: 'Vintage Data / ALFRED', category: '数据与转换', definition: 'ALFRED 保存"当时看到的"数据版本。本项目用今天已修订的 FRED 数据，因此回测是伪实时（Limitation 1）。', lessonId: 'm13-l1' },
+
+  /* ---------------- 回归与统计 ---------------- */
+  { id: 'linear-regression', zh: '线性回归', en: 'Linear Regression', category: '回归与统计', definition: '用一条直线描述 predictor 与 target 关系的方法：y = α + β·x + ε。', example: 'FoodAtHome(t) = 1.408 + 0.650 × PPI(t−1)。', lessonId: 'm6-l1' },
+  { id: 'ols', zh: '普通最小二乘法', en: 'OLS (Ordinary Least Squares)', category: '回归与统计', definition: '在所有直线中选残差平方和最小那条的估计方法。', example: 'sm.OLS(...).fit()。', lessonId: 'm6-l2' },
+  { id: 'alpha', zh: '截距', en: 'Alpha (Intercept)', category: '回归与统计', definition: '当 predictor 为 0 时模型预测的 target 值；直线的"起点高度"。', example: 'Home baseline 当前 α = 1.408。', lessonId: 'm6-l1' },
+  { id: 'beta', zh: '斜率系数', en: 'Beta (Slope)', category: '回归与统计', definition: 'predictor 每高 1 个单位，target 平均高多少。', example: 'β = 0.650：PPI YoY 高 1pp，Food at Home YoY 平均高 0.65pp。', lessonId: 'm6-l1' },
+  { id: 'predictor', zh: '预测变量', en: 'Predictor', category: '回归与统计', definition: '回归中用来预测的输入变量（x），也叫解释变量。', example: 'Home 的 predictor 是 WPU02 YoY。', lessonId: 'm4-l1' },
+  { id: 'target', zh: '目标变量', en: 'Target', category: '回归与统计', definition: '回归要预测的对象（y）。', example: 'Food at Home CPI YoY。', lessonId: 'm4-l1' },
+  { id: 'residual', zh: '残差', en: 'Residual', category: '回归与统计', definition: '实际值 − 模型拟合值，即直线没解释掉的部分。OLS 的目标就是让残差平方和最小。', lessonId: 'm6-l2' },
+  { id: 'standard-error', zh: '标准误', en: 'Standard Error', category: '回归与统计', definition: '系数估计的不确定性度量：SE 越小，估计越精确。', example: 'β 0.650 的 HAC SE 是 0.043。', lessonId: 'm6-l3' },
+  { id: 'p-value', zh: 'P 值', en: 'P-value', category: '回归与统计', definition: '若真实系数为 0，观察到当前估计的概率。越小说明关系越难用巧合解释。', example: 'Home baseline β 的 p 值约 9e-52。', lessonId: 'm6-l3' },
+  { id: 'hac', zh: 'HAC 标准误', en: 'HAC Standard Error', category: '回归与统计', definition: '对异方差和自相关稳健的标准误（Newey-West）。月度重叠数据误差自相关，普通 SE 会过于乐观。', example: 'Cell 21：cov_type="HAC", maxlags=12。', lessonId: 'm6-l3' },
+  { id: 'r-squared', zh: '拟合优度', en: 'R² (R-squared)', category: '回归与统计', definition: '模型解释了 target 方差的比例（样本内）。用于 lag 选择时称 Training R²。', example: 'WPU02 lag 1 的 Training R² = 0.769。', lessonId: 'm4-l3' },
+  { id: 'multicollinearity', zh: '多重共线性', en: 'Multicollinearity', category: '回归与统计', definition: '多个 predictor 高度相关时，系数无法被可靠区分，估计不稳定。', example: 'Home survey expanded 的 condition number 81 vs baseline 的 6.6。', lessonId: 'm7-l3' },
+  { id: 'overfitting', zh: '过拟合', en: 'Overfitting', category: '回归与统计', definition: '模型记住了训练样本的噪声，样本内很漂亮、样本外掉链子。变量越多风险越大。', lessonId: 'm7-l3' },
+  { id: 'correlation-causation', zh: '相关不等于因果', en: 'Correlation ≠ Causation', category: '回归与统计', definition: '两个序列同涨同跌不代表一个导致另一个。lead-lag 回归依赖经济逻辑支撑，不能只看相关性。', lessonId: 'm4-l4' },
+  { id: 'condition-number', zh: '条件数', en: 'Condition Number', category: '回归与统计', definition: '衡量回归设计矩阵病态程度的指标，过大提示共线性问题。', example: 'Away survey expanded 为 85.6。', lessonId: 'm7-l3' },
+
+  /* ---------------- 回测与评估 ---------------- */
+  { id: 'forecast-origin', zh: '预测起点', en: 'Forecast Origin', category: '回测与评估', definition: '做预测的"站立时点"：只能用该月及以前的数据。', example: '当前 origin 是 2026-06。', lessonId: 'm8-l1' },
+  { id: 'forecast-horizon', zh: '预测期限', en: 'Forecast Horizon', category: '回测与评估', definition: '预测提前的月数（h=1..12）。主要评估口径是 12-month-ahead。', lessonId: 'm8-l1' },
+  { id: 'expanding-window', zh: '扩张窗口', en: 'Expanding Window', category: '回测与评估', definition: '训练窗口起点固定、终点随 origin 前移的回测方式。每个 origin 重估系数、规格不变。', example: 'Notebook 的所有回测与当前预测均用它。', lessonId: 'm8-l2' },
+  { id: 'rolling-window', zh: '滚动窗口', en: 'Rolling Window', category: '回测与评估', definition: '训练窗口长度固定、整体平移。适应快但样本量恒定小。本项目未采用。', lessonId: 'm8-l2' },
+  { id: 'fixed-window', zh: '固定窗口', en: 'Fixed Window', category: '回测与评估', definition: '只用一段固定历史估计一次、之后不更新。最简单但会过时。本项目未采用。', lessonId: 'm8-l2' },
+  { id: 'backtest', zh: '回测', en: 'Backtest', category: '回测与评估', definition: '假装回到历史上每个月做预测，再与实际对比，评估模型"当时"会有多准。', lessonId: 'm8-l1' },
+  { id: 'look-ahead-bias', zh: '前视偏差', en: 'Look-ahead Bias', category: '回测与评估', definition: '用"当时不可能知道"的信息做历史决策，导致回测成绩虚高。像考试前偷看答案。', example: '防线：lag 选择只用 ≤1999 数据。', lessonId: 'm5-l1' },
+  { id: 'training-sample', zh: '训练样本', en: 'Training Sample', category: '回测与评估', definition: '用于估计模型/选择 lag 的数据段。本项目 lag-training 截止 1999-12。', lessonId: 'm5-l1' },
+  { id: 'validation-sample', zh: '验证样本', en: 'Validation Sample', category: '回测与评估', definition: '用于比较候选模型的数据段：origins 2000-01 至 2014-12（结果最晚 2015-12 实现）。', lessonId: 'm5-l1' },
+  { id: 'final-test', zh: '最终测试样本', en: 'Final Test Sample', category: '回测与评估', definition: '从未参与任何选择的数据段（origins 2016-01 起），其成绩才是可信的样本外表现。', lessonId: 'm5-l1' },
+  { id: 'model-selection', zh: '模型选择', en: 'Model Selection', category: '回测与评估', definition: '决定用哪些变量、哪个 lag、哪个规格的过程。必须与最终评估的数据分离。', lessonId: 'm5-l2' },
+  { id: 'oos-evaluation', zh: '样本外评估', en: 'Out-of-Sample Evaluation', category: '回测与评估', definition: '在训练时没见过的数据上评估预测表现——预测能力的唯一可信度量。', lessonId: 'm5-l2' },
+  { id: 'forecast-error', zh: '预测误差', en: 'Forecast Error', category: '回测与评估', definition: 'Actual − Forecast。正=低估通胀，负=高估。', lessonId: 'm11-l1' },
+  { id: 'rmse', zh: '均方根误差', en: 'RMSE', category: '回测与评估', definition: '误差平方均值的平方根，对大误差敏感，单位 pp。', example: 'Primary 12M OOS RMSE = 2.035 pp。', lessonId: 'm11-l1' },
+  { id: 'mae', zh: '平均绝对误差', en: 'MAE', category: '回测与评估', definition: '误差绝对值的平均，代表典型误差大小。', example: 'Primary 12M OOS MAE = 1.381 pp。', lessonId: 'm11-l1' },
+  { id: 'no-change-benchmark', zh: '不变基准', en: 'No-change Benchmark', category: '回测与评估', definition: '"未来 = 今天"的朴素预测，OOS R² 的参照物。', lessonId: 'm11-l2' },
+  { id: 'oos-r2', zh: '样本外 R 平方', en: 'OOS R² (vs No-change)', category: '回测与评估', definition: '1 − 模型平方误差/基准平方误差。0.598 = 平方误差比 no-change 低 59.8%。不是准确率！', example: 'Primary 0.598、Survey 0.636、Away Legacy 0.097。', lessonId: 'm11-l2' },
+  { id: 'nominal-interval', zh: '名义预测区间', en: 'Nominal Prediction Interval', category: '回测与评估', definition: '由回归理论公式推出的区间。其历史覆盖率（0.814）低于承诺的 0.95。', lessonId: 'm11-l3' },
+  { id: 'empirical-interval', zh: '经验误差区间', en: 'Empirical OOS-error Interval', category: '回测与评估', definition: '用历史回测误差的 2.5%/97.5% 分位数构造的区间，是主要可靠性度量。', example: '2027-06：[−0.56%, 8.23%]。', lessonId: 'm11-l3' },
+  { id: 'coverage', zh: '区间覆盖率', en: 'Interval Coverage', category: '回测与评估', definition: '实际值历史上落入区间的比例；诚实的 95% 区间应接近 0.95。', lessonId: 'm11-l3' },
+  { id: 'serial-correlation', zh: '序列相关', en: 'Serial Correlation', category: '回测与评估', definition: '相邻误差彼此相关。重叠的 12 个月预测窗口必然导致它（Limitation 6），用 HAC SE 应对。', lessonId: 'm13-l1' },
+
+  /* ---------------- 模型与预测 ---------------- */
+  { id: 'leading-indicator', zh: '领先指标', en: 'Leading Indicator', category: '模型与预测', definition: '先于目标变量变动的指标：今天的它包含未来目标的信息。', example: '生产端 PPI 领先杂货价格约 1 个月。', lessonId: 'm4-l1' },
+  { id: 'lag', zh: '滞后', en: 'Lag', category: '模型与预测', definition: 'predictor 领先 target 的月数：lag L 表示用 t−L 月的 x 预测 t 月的 y。', example: 'Home lag 1、Away lag 12。', lessonId: 'm4-l2' },
+  { id: 'lead-lag-regression', zh: '先行滞后回归', en: 'Lead-lag Regression', category: '模型与预测', definition: '把 predictor 平移 L 个月后做的普通回归：y(t) = α + β·x(t−L)。', lessonId: 'm4-l2' },
+  { id: 'lag-selection', zh: '滞后选择', en: 'Lag Selection', category: '模型与预测', definition: '在 0–12 个 lag 中按 Training R² 选最优，只用 ≤1999 样本，选后冻结。', example: 'WPU02 → lag 1（R² 0.769）。', lessonId: 'm4-l3' },
+  { id: 'model-specification', zh: '模型规范', en: 'Model Specification', category: '模型与预测', definition: '模型的完整定义：target、predictors、lags。在最终测试前冻结（Cell 19 的 model_specs）。', lessonId: 'm5-l2' },
+  { id: 'primary-baseline', zh: '主基准模型', en: 'Primary Baseline', category: '模型与预测', definition: '主预测：Home baseline（PPI lag 1）+ Away legacy（工资 lag 12），全国性、透明、直连食品通道。', example: '2027-06 预测 3.02%。', lessonId: 'm7-l2' },
+  { id: 'long-history-baseline', zh: '长历史基准', en: 'Long-History Baseline', category: '模型与预测', definition: '把 Away 换成 1964 年起的一线员工工资（lag 2）的备选家族。12M OOS R² 0.592。', lessonId: 'm7-l1' },
+  { id: 'survey-sensitivity', zh: '调查敏感性分析', en: 'Survey Sensitivity', category: '模型与预测', definition: '加入费城联储调查的敏感性模型，回答"若价格意向传导会怎样"。是情景，不是主预测。', example: '2027-06 情景 4.34%。', lessonId: 'm7-l2' },
+  { id: 'robustness-check', zh: '稳健性检查', en: 'Robustness Check', category: '模型与预测', definition: '用其他合理规格（农业/能源/全球食品等）验证结论是否依赖于特定选择。', lessonId: 'm7-l1' },
+  { id: 'legacy-model', zh: '延续性模型', en: 'Legacy Model', category: '模型与预测', definition: '沿用早期版本的模型（Away all-employee lag 12），保持结果可比性与延续性。', lessonId: 'm7-l1' },
+  { id: 'observed', zh: '已观察值', en: 'Observed', category: '模型与预测', definition: '在 information cutoff 前已经发布的 predictor 值。audit 表中标绿。', example: 'Away 的 12 个工资月份全部 observed。', lessonId: 'm9-l2' },
+  { id: 'assumed', zh: '假设值', en: 'Assumed', category: '模型与预测', definition: '未发布的未来 predictor 用最新 3 个月平均代替。audit 表中标橙。', example: 'Home 后 11 个月用 1.879。', lessonId: 'm9-l1' },
+  { id: 'information-cutoff', zh: '信息截止日', en: 'Information Cutoff', category: '模型与预测', definition: '每个 predictor "可以用到哪个月"的边界，决定 observed/assumed 判定。', lessonId: 'm9-l3' },
+  { id: 'forecast-input-audit', zh: '预测输入审计表', en: 'Forecast Input Audit', category: '模型与预测', definition: '逐行记录每个预测月用了哪个 predictor 月份、值、来源的表（72 行）。', example: 'Cell 35 输出。', lessonId: 'm9-l3' },
+  { id: 'three-month-average', zh: '三个月平均假设', en: 'Latest 3-month Average Assumption', category: '模型与预测', definition: '未观察 PPI 的替代规则：最新 3 个月 YoY 的平均。', example: '(2.14+1.87+1.63)/3 ≈ 1.879。', lessonId: 'm9-l1' },
+  { id: 'baseline-scenario', zh: '基准情景', en: 'Baseline Scenario', category: '模型与预测', definition: '基于中性假设（如 3 个月平均）的预测路径——不是确定的未来。', lessonId: 'm13-l1' },
+  { id: 'contribution', zh: '对整体的贡献', en: 'Contribution to Headline CPI', category: '模型与预测', definition: 'Food YoY × 13.447 / 100，单位 pp——Food 给 Headline 通胀"贡献"了多少。', example: '3.02% → 0.41 pp。', lessonId: 'm10-l3' },
+
+  /* ---------------- 项目术语 ---------------- */
+  { id: 'capstone', zh: '顶点项目', en: 'Capstone Project', category: '项目术语', definition: '研究生课程的综合实践项目。本项目与 Pacific Life 合作预测 CPI。', lessonId: 'm0-l1' },
+  { id: 'pacific-life', zh: '太平洋人寿', en: 'Pacific Life', category: '项目术语', definition: '合作企业：保险与投资管理公司，需要通胀预测支持投资与风险决策。', lessonId: 'm0-l1' },
+  { id: 'notebook', zh: '分析笔记本', en: 'Jupyter Notebook', category: '项目术语', definition: '代码 + 说明 + 输出混排的分析文档。本课程唯一依据是 45-cell 的 Food_CPI.ipynb。', lessonId: 'm12-l1' },
+  { id: 'checkpoint', zh: '检查点', en: 'Checkpoint', category: '项目术语', definition: '每个模块最后的综合关卡，通过后解锁下一模块。' },
+  { id: 'mock-meeting', zh: '模拟会议', en: 'Mock Meeting', category: '项目术语', definition: '模拟 Pacific Life 追问的 13 个英文问题练习，附即时反馈与参考答案。' },
+]

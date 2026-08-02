@@ -314,7 +314,7 @@ function ForecastFanChart() {
       <ComposedChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: -16 }}>
         <CartesianGrid stroke={C.grid} strokeDasharray="3 3" />
         <XAxis dataKey="m" tick={{ fill: C.text, fontSize: 11 }} minTickGap={40} />
-        <YAxis tick={{ fill: C.text, fontSize: 11 }} unit="%" domain={[-2, 9]} />
+        <YAxis tick={{ fill: C.text, fontSize: 11 }} unit="%" domain={[-2, 9]} ticks={[-2, 0, 2, 4, 6, 8]} />
         <Tooltip contentStyle={tooltipStyle} />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         <Area type="monotone" dataKey="lo" stackId="band" stroke="none" fill="transparent" name=" " legendType="none" />

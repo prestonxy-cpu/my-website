@@ -88,6 +88,22 @@ export const module0: CourseModule = {
           },
         },
         {
+          type: 'exercise',
+          exercise: {
+            kind: 'matchPairs',
+            title: '概念快速配对',
+            instructions: '把左边的概念与右边的解释配对。',
+            pairs: [
+              { left: 'CPI', right: '衡量一篮子商品和服务价格水平的指数' },
+              { left: 'Inflation Rate', right: '价格水平的增长速度（通常用 YoY 表示）' },
+              { left: 'Capstone Project', right: '与真实企业合作的综合实践项目' },
+              { left: 'Pacific Life', right: '需要通胀预测支持投资决策的保险公司' },
+            ],
+            feedbackCorrect: '配对全部正确！这四个概念是整个课程的舞台背景。',
+            feedbackWrong: '再想想：哪个是"指数"，哪个是"增长速度"？哪个是项目形式，哪个是合作方？',
+          },
+        },
+        {
           type: 'selfExplain',
           selfExplain: {
             prompt: '请用自己的话解释：这个项目要做什么？Pacific Life 为什么需要它？',
