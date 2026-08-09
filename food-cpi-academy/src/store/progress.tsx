@@ -11,6 +11,8 @@ import { modules, allLessons } from '../content'
 import { achievements } from '../data/achievements'
 
 const STORAGE_KEY = 'food-cpi-academy-progress-v2'
+/** 备份键：只在进度「不减少」时写入，作为高水位存档，可救回被覆盖的进度 */
+const BACKUP_KEY = 'food-cpi-academy-progress-v2-backup'
 
 export const LEVELS = [
   { xp: 0, title: '数据学徒' },
@@ -58,15 +60,59 @@ function freshState(): ProgressState {
   }
 }
 
-function loadState(): ProgressState {
+type StoredState = ProgressState & { savedAt?: string }
+
+function readKey(key: string): StoredState | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return freshState()
-    const parsed = JSON.parse(raw) as ProgressState
-    if (parsed.version !== 2) return freshState()
-    return { ...freshState(), ...parsed }
+    const raw = localStorage.getItem(key)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as StoredState
+    if (parsed.version !== 2) return null
+    return parsed
   } catch {
-    return freshState()
+    return null
+  }
+}
+
+/** 进度分数：完成课程数优先，其次 XP。用于判断哪份存档「更靠前」 */
+export function progressScore(s: Partial<ProgressState>): number {
+  const done = Object.values(s.lessons ?? {}).filter((l) => l?.completed).length
+  const meeting = Object.values(s.meeting ?? {}).filter((m) => m?.passed).length
+  return done * 100000 + meeting * 1000 + (s.xp ?? 0)
+}
+
+/**
+ * 读取存档：主键与备份键取「进度更靠前」的一份。
+ * 这样即使主键被旧标签页覆盖或被误重置，备份仍能救回进度。
+ */
+function loadState(): ProgressState {
+  const primary = readKey(STORAGE_KEY)
+  const backup = readKey(BACKUP_KEY)
+  const best = !primary
+    ? backup
+    : !backup
+      ? primary
+      : progressScore(backup) > progressScore(primary)
+        ? backup
+        : primary
+  if (!best) return freshState()
+  return { ...freshState(), ...best }
+}
+
+function saveState(s: ProgressState): void {
+  const payload = JSON.stringify({ ...s, savedAt: new Date().toISOString() })
+  try {
+    localStorage.setItem(STORAGE_KEY, payload)
+  } catch {
+    /* 存储不可用（隐身模式、配额已满等）时静默失败 */
+  }
+  try {
+    const backup = readKey(BACKUP_KEY)
+    if (!backup || progressScore(s) >= progressScore(backup)) {
+      localStorage.setItem(BACKUP_KEY, payload)
+    }
+  } catch {
+    /* 备份失败不影响主存档 */
   }
 }
 
@@ -90,6 +136,13 @@ interface ProgressApi {
   recordFinal: (score: number) => void
   resetAll: () => void
 
+  /** 导出进度为 JSON 字符串（用于备份到文件或换设备） */
+  exportProgress: () => string
+  /** 从 JSON 字符串恢复进度；返回是否成功 */
+  importProgress: (json: string) => boolean
+  /** 把某个模块的全部课程标记为已完成（用于进度丢失后免于重学） */
+  markModuleComplete: (moduleId: string) => void
+
   isModuleUnlocked: (moduleId: string) => boolean
   isLessonUnlocked: (lessonId: string) => boolean
   isLessonCompleted: (lessonId: string) => boolean
@@ -106,12 +159,31 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   stateRef.current = state
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-    } catch {
-      /* 存储不可用时静默失败（隐身模式等） */
-    }
+    saveState(state)
   }, [state])
+
+  /**
+   * 跨标签页同步：另一个标签页保存了「更靠前」的进度时立即采纳。
+   * 没有这一步，停留在旧状态的标签页会把新进度覆盖掉。
+   */
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY || !e.newValue) return
+      try {
+        const incoming = JSON.parse(e.newValue) as StoredState
+        if (incoming.version !== 2) return
+        setState((cur) =>
+          progressScore(incoming) > progressScore(cur)
+            ? { ...freshState(), ...incoming }
+            : cur,
+        )
+      } catch {
+        /* 忽略无法解析的写入 */
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [])
 
   /** 判定并解锁新成就 */
   const evaluateAchievements = useCallback((s: ProgressState): ProgressState => {
@@ -257,6 +329,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           }
         }),
 
+      markModuleComplete: (moduleId) =>
+        update((s) => {
+          const mod = modules.find((m) => m.id === moduleId)
+          if (!mod) return s
+          const now = new Date().toISOString()
+          let next = s
+          for (const lesson of mod.lessons) {
+            if (next.lessons[lesson.id]?.completed) continue
+            next = {
+              ...lessonPatch(next, lesson.id, { completed: true, completedAt: now }),
+              xp: next.xp + lesson.xp,
+            }
+          }
+          return next
+        }),
+
       recordMeeting: (questionId, passed, weakPoints, answer) =>
         update((s) => {
           const prev: MeetingRecord = s.meeting[questionId] ?? {
@@ -314,7 +402,28 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
       resetAll: () => {
         setPendingToasts([])
+        // 备份键也要清掉，否则下次加载会把「高水位」存档又恢复回来
+        try {
+          localStorage.removeItem(BACKUP_KEY)
+        } catch {
+          /* 忽略 */
+        }
         setState(freshState())
+      },
+
+      exportProgress: () =>
+        JSON.stringify({ ...stateRef.current, savedAt: new Date().toISOString() }, null, 2),
+
+      importProgress: (json) => {
+        try {
+          const parsed = JSON.parse(json) as StoredState
+          if (parsed.version !== 2 || typeof parsed.lessons !== 'object') return false
+          setPendingToasts([])
+          setState({ ...freshState(), ...parsed })
+          return true
+        } catch {
+          return false
+        }
       },
 
       isModuleUnlocked,
